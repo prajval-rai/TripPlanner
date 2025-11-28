@@ -2,13 +2,13 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
-from users.models import UserProfile
+from django.contrib.auth.models import User
 
 class TripTags(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
 class Trips(models.Model):
-    created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
     start_date = models.DateField()
@@ -31,7 +31,7 @@ class InvitedPeople(models.Model):
         ('declined', 'Declined')
     ]
     trip = models.ForeignKey(Trips, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     reminder_msg = models.TextField(blank=True, null=True)
     reminder_time = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='invited')
