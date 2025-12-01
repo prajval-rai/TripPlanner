@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +48,23 @@ INSTALLED_APPS = [
     "rest_framework"
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),   # default 5 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),      # default 1 day
+    'ROTATE_REFRESH_TOKENS': True,                    # optional, rotates refresh token on refresh
+    'BLACKLIST_AFTER_ROTATION': True,                # optional, for logout
+    'ALGORITHM': 'HS256',                             # default
+    'SIGNING_KEY': SECRET_KEY,                        # default
+    'AUTH_HEADER_TYPES': ('Bearer',),                # default
+}
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -57,6 +76,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "Triplanner.urls"
+
+
 
 TEMPLATES = [
     {
