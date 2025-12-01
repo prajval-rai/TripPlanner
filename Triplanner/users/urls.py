@@ -1,7 +1,7 @@
 # users/urls.py
 
 from django.urls import path
-from .views import register_user,login_user,user_follow_counts,send_follow_request,list_all_follow_requests,manage_follow_request,unfollow_user
+from .views import *
 
 urlpatterns = [
     path('register/', register_user, name="register-user"),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('list_all_follow_requests/', list_all_follow_requests, name='list_all_follow_requests'),
     path('manage_follow_request/', manage_follow_request, name='manage_follow_request'),
     path("unfollow/", unfollow_user),
+    path("search_users/",search_users,name='search_users')
 ]
