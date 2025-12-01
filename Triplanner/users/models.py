@@ -17,6 +17,8 @@ class Profile(models.Model):
     current_lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     current_lng = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     device_token = models.CharField(max_length=255, blank=True, null=True)
+    access_token = models.CharField(max_length=500,blank=True,null=True)
+    refresh_token = models.CharField(max_length=500,blank=True,null=True)
 
 
 
@@ -25,6 +27,7 @@ class FollowRequest(models.Model):
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected'),
+        ('cancelled', 'Cancelled'),
     ]
     request_from = models.ForeignKey(User, related_name='requests_sent', on_delete=models.CASCADE)
     request_to = models.ForeignKey(User, related_name='requests_received', on_delete=models.CASCADE)
@@ -43,3 +46,9 @@ class Follower(models.Model):
 
     class Meta:
         unique_together = ('user', 'follow_by')
+
+
+class UnfollowHistory(models.Model):
+    user = models.ForeignKey(User, related_name='unfollowed_users', on_delete=models.CASCADE)
+    unfollowed_by = models.ForeignKey(User, related_name='unfollow_actions', on_delete=models.CASCADE)
+    unfollowed_at = models.DateTimeField(auto_now_add=True)
