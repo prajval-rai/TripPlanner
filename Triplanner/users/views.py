@@ -228,6 +228,11 @@ def manage_follow_request(request):
     request_to_id = request.user.id
     status = request.data.get("status")
 
+    if status == "cancelled":
+        request_from_id = request.user.id
+        request_to_id = request.data.get("request_from")
+
+
     if not status:
         return Response({"error": "Status is required"}, status=400)
 
@@ -357,3 +362,28 @@ def search_users(request):
 
     serializer = UserSearchSerializer(users, many=True)
     return Response({"results": serializer.data}, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def notification_read(request):
+    try:
+        notification_obj = Notifications.objects.filter(user=request.user.id,is_read=False)
+        frd_req = FollowRequest.objects.filter(request_to=request.user,status="pending").count()
+        notification_obj.update(is_read=True)
+        
+        return Response({"frd_request":frd_req,"total_notification":notification_obj.count()}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": e.__str__()}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_all_notify(request):
+    try:
+        all_notify = Notifications.objects.filter(user=request.user,is_read=False).count()
+        return Response({"total_notify":all_notify},status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error":e.__str__()},status=status.HTTP_400_BAD_REQUEST)
+        
+
