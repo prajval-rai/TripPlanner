@@ -138,7 +138,6 @@ def user_follow_counts(request, user_id):
     # If requesting own profile
     if request.user.id == user_id:
         pending_requests_count = FollowRequest.objects.filter(request_to=user, status='pending').count()
-        print("--------------------------",pending_requests_count)
 
         notification_counts = (
             Notifications.objects
