@@ -11,5 +11,8 @@ urlpatterns = [
     path('list_all_follow_requests/', list_all_follow_requests, name='list_all_follow_requests'),
     path('manage_follow_request/', manage_follow_request, name='manage_follow_request'),
     path("unfollow/", unfollow_user),
-    path("search_users/",search_users,name='search_users')
+    path("search_users/",search_users,name='search_users'),
+    path("notification_read/",notification_read,name='search_users'),
+    path("get_all_notify/",get_all_notify,name="get_all_notify")
+
 ]
