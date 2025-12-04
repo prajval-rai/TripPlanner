@@ -13,6 +13,7 @@ urlpatterns = [
     path("unfollow/", unfollow_user),
     path("search_users/",search_users,name='search_users'),
     path("notification_read/",notification_read,name='search_users'),
-    path("get_all_notify/",get_all_notify,name="get_all_notify")
+    path("get_all_notify/",get_all_notify,name="get_all_notify"),
+    path('my-followers/', my_followers, name='my-followers'),
 
 ]

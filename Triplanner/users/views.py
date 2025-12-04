@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from notifications.models import Notifications
 from django.db.models import Count,Q
-from .serializers import UserSearchSerializer
+from .serializers import UserSearchSerializer,FollowerDetailSerializer
 
 @api_view(['POST'])
 def register_user(request):
@@ -387,3 +387,9 @@ def get_all_notify(request):
         return Response({"error":e.__str__()},status=status.HTTP_400_BAD_REQUEST)
         
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_followers(request):
+    followers = Follower.objects.filter(user=request.user)
+    serializer = FollowerDetailSerializer(followers, many=True)
+    return Response(serializer.data)
