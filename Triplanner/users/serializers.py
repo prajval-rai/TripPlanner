@@ -20,7 +20,7 @@ class FollowerDetailSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='follow_by.first_name')
     last_name = serializers.CharField(source='follow_by.last_name')
     username = serializers.CharField(source='follow_by.username')
-
+    userid = serializers.IntegerField(source='follow_by.id')
     class Meta:
         model = Follower
-        fields = ['id', 'first_name', 'last_name', 'username', 'followed_at']
+        fields = ['userid', 'first_name', 'last_name', 'username', 'followed_at']

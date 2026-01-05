@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Trips, TripTags, TripTagMapping, InvitedPeople, ItineraryActivity
+from .models import Trips, TripTags, TripTagMapping, InvitedPeople, ItineraryActivity,TripReminder
 
 
 # ===========================
@@ -65,6 +65,7 @@ class ItineraryActivitySerializer(serializers.ModelSerializer):
             "end_time",
             "reminder",
             "reminder_time",
+            "photo"
         ]
 
 
@@ -99,6 +100,7 @@ class TripDetailSerializer(serializers.ModelSerializer):
             "tags",
             "invited_people",
             "itinerary",
+            "photo"
         ]
 
 
@@ -106,6 +108,66 @@ class TripDetailSerializer(serializers.ModelSerializer):
 # SIMPLE TRIP SERIALIZER
 # ===========================
 class TripSerializer(serializers.ModelSerializer):
+    invited_count = serializers.IntegerField(read_only=True)
+    status = serializers.CharField(read_only=True)
     class Meta:
         model = Trips
         fields = "__all__"
+
+class TripReminderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TripReminder
+        fields = "__all__"
+
+class InvitedPeopleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InvitedPeople
+        fields = "__all__"
+
+class InvitedTripListSerializer(serializers.ModelSerializer):
+    trip_id = serializers.IntegerField(source="trip.id")
+    title = serializers.CharField(source="trip.title")
+    location = serializers.CharField(source="trip.location")
+    start_date = serializers.DateField(source="trip.start_date")
+    end_date = serializers.DateField(source="trip.end_date")
+    photo = serializers.CharField(source="trip.photo")
+
+    created_by = serializers.SerializerMethodField()
+
+    class Meta:
+        model = InvitedPeople
+        fields = [
+            "id",            # invited record id
+            "trip_id",
+            "title",
+            "location",
+            "start_date",
+            "end_date",
+            "photo",
+            "created_by",
+            "status",
+        ]
+
+    def get_created_by(self, obj):
+        user = obj.trip.created_by
+        return {
+            "id": user.id,
+            "name": f"{user.first_name} {user.last_name}".strip()
+                    or user.username
+        }
+
+
+
+class InvitedPeopleDetailSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    user_email = serializers.CharField(source='user.email', read_only=True)
+
+    class Meta:
+        model = InvitedPeople
+        fields = ["id", "user", "user_name", "user_email", "reminder_msg", "reminder_time", "status"]
+
+class TripReminderDetailSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    class Meta:
+        model = TripReminder
+        fields = ["id", "user", "user_name", "dateTime", "message", "status"]

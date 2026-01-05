@@ -49,4 +49,11 @@ class ItineraryActivity(models.Model):
     end_time = models.CharField(max_length=50,null=True,blank=True)
     reminder = models.BooleanField(default=True)
     reminder_time = models.CharField(max_length=50,null=True,blank=True)
-    photo = models.CharField(max_length=100,null=True,blank=True)
+    photo = models.TextField(max_length=1000,null=True,blank=True)
+
+
+class TripReminder(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    dateTime = models.DateTimeField()
+    message = models.TextField()
+    status = models.CharField(default="Send")
