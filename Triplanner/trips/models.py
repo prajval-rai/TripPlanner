@@ -56,4 +56,4 @@ class TripReminder(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     dateTime = models.DateTimeField()
     message = models.TextField()
-    status = models.CharField(default="Send")
+    status = models.CharField(default="Send", max_length=20)

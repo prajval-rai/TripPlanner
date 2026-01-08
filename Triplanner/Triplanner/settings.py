@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import dj_database_url
 from pathlib import Path
 from datetime import timedelta
+import os
+import dj_database_url
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -104,13 +107,19 @@ WSGI_APPLICATION = "Triplanner.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import dj_database_url
+
+db_url = os.getenv('db_url')
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get("postgresql://prajval2001:fdfFuINiCduBYdjEuU5QWRTHUzBfXqzg@dpg-d5fnjb24d50c73fa7gv0-a/triplanner_pmpe"),
+    "default": dj_database_url.parse(
+        db_url,
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=True  # Render Postgres requires SSL
     )
 }
+
+
 
 
 # Password validation
