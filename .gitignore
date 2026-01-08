@@ -1,3 +1,21 @@
-myenv
-serviceAccountKey.json
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+myenv/
+
+# Env files
 .env
+serviceAccountKey.json
+
+# Django files
+db.sqlite3
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
