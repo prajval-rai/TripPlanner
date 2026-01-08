@@ -9,14 +9,15 @@ from config import GOOGLE_API_KEY
 @api_view(["GET"])
 @permission_classes([AllowAny])   # change to IsAuthenticated later if needed
 def google_place_search(request):
-    query = request.GET.get("query", None)
+    cat = request.GET.get("cat", None)
+    location = request.GET.get("location", None)
 
-    if not query:
+    if not cat and not location:
         return Response({"error": "Query parameter is required"}, status=400)
 
     
 
-    url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={requests.utils.quote(query)}&key={GOOGLE_API_KEY}"
+    url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={cat}+in+{location}&key={GOOGLE_API_KEY}"
 
     try:
         response = requests.get(url)
