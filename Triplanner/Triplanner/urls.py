@@ -26,6 +26,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/notifications/', include('notifications.urls')),
     path('user/', include('users.urls')),
-    path('search/',include('TripGoogle.urls'))
+    path('search/',include('TripGoogle.urls')),
+    path('trip/',include('trips.urls'))
     
 ]
